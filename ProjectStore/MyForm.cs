@@ -18,7 +18,9 @@ namespace ProjectStore
 
     class MyForm : Form
     {
-        
+
+
+
         public Products[] merc;
 
         public MyForm()
@@ -31,40 +33,48 @@ namespace ProjectStore
             for (int i = 0; i < items.Length; i++)
             {
                 string[] stock = items[i].Split(',');
-                merc[i] = new Products { name = stock[0], price = int.Parse(stock[1]),};
+                merc[i] = new Products { name = stock[0], price = int.Parse(stock[1]), };
 
             }
 
-            
+            Size = new Size(800, 600);
+
 
             TableLayoutPanel table = new TableLayoutPanel
             {
-                ColumnCount = 1,
-                RowCount = 2,
+
+                ColumnCount = 2,
+                RowCount = 1,
                 Dock = DockStyle.Fill
             };
             Controls.Add(table);
 
             ListView listView1 = new ListView();
             {
+                Size = new Size(800, 600);
 
-
-
-            }
+            };
             table.Controls.Add(listView1);
 
-        }
-            private void CreatePicture(string path)
+            ListView listView2 = new ListView();
             {
-                PictureBox box1 = new PictureBox
-                {
-                    Image = Image.FromFile(path),
-                    SizeMode = PictureBoxSizeMode.StretchImage,
-                    Width = 150,
-                    Height = 150
-                };
 
             }
+            table.Controls.Add(listView2);
+
+        }
+        private void CreatePicture(string path)
+        {
+            PictureBox box1 = new PictureBox
+            {
+                Image = Image.FromFile(path),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Width = 150,
+                Height = 150
+            };
+
+        }
+
     }
 }
 
