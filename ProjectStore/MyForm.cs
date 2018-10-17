@@ -9,36 +9,13 @@ using System.IO;
 
 namespace ProjectStore
 {
-    class Products
-    {
-        public string name;
-        public int price;
-
-    }
+    
 
     class MyForm : Form
     {
 
-
-
-        public Products[] merc;
-
-        public MyForm()
+       public MyForm()
         {
-            string[] items = File.ReadAllLines("Text1.csv");
-
-            merc = new Products[items.Length];
-
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                string[] stock = items[i].Split(',');
-                merc[i] = new Products { name = stock[0], price = int.Parse(stock[1]), };
-
-            }
-
-            Size = new Size(800, 600);
-
 
             TableLayoutPanel table = new TableLayoutPanel
             {
@@ -54,8 +31,8 @@ namespace ProjectStore
             table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
 
             ListView listView1 = new ListView();
             {
@@ -74,42 +51,15 @@ namespace ProjectStore
             TextBox rabatt = new TextBox();
             {
                 rabatt.Height = 100;
-                rabatt.Width = 300;
+                rabatt.Width = 250;
             }
             table.Controls.Add(rabatt, 0,3);
 
-            //PictureBox box1 = new PictureBox();
-            //{
-            //    box1.Height = 250;
-            //    box1.Width = 250;
-            //}
-            //table.Controls.Add(box1, , 3);
-
-            //DataGrid MyGrid = new DataGrid();
-            //{
-            //    MyGrid.Width = 250;
-            //    MyGrid.Height = 100;
-            //}
-            //Controls.Add(MyGrid);
-
-            //ListView listView2 = new ListView();
-            //{
-
-            //}
-            //table.Controls.Add(listView2);
-
-        }
-        private void CreatePicture(string path)
-        {
-            PictureBox box1 = new PictureBox
+            Button butt1 = new Button();
             {
-                Image = Image.FromFile(path),
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 150,
-                Height = 150
-            };
-
-        }
+                Text = "Add";
+            }
+        }   
 
     }
 }
