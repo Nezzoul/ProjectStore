@@ -42,25 +42,61 @@ namespace ProjectStore
 
             TableLayoutPanel table = new TableLayoutPanel
             {
-
-                ColumnCount = 2,
-                RowCount = 1,
+                ColumnCount = 4,
+                RowCount = 4,
                 Dock = DockStyle.Fill
             };
             Controls.Add(table);
 
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
             ListView listView1 = new ListView();
             {
-                Size = new Size(800, 600);
-
+                listView1.Height = 400;
+                listView1.Width = 250;
             };
-            table.Controls.Add(listView1);
+            table.Controls.Add(listView1, 0,1);
 
-            ListView listView2 = new ListView();
+            ListView listview2 = new ListView();
             {
-
+                listview2.Height = 400;
+                listview2.Width = 250;
             }
-            table.Controls.Add(listView2);
+            table.Controls.Add(listview2, 3, 1);
+
+            TextBox rabatt = new TextBox();
+            {
+                rabatt.Height = 100;
+                rabatt.Width = 300;
+            }
+            table.Controls.Add(rabatt, 0,3);
+
+            //PictureBox box1 = new PictureBox();
+            //{
+            //    box1.Height = 250;
+            //    box1.Width = 250;
+            //}
+            //table.Controls.Add(box1, , 3);
+
+            //DataGrid MyGrid = new DataGrid();
+            //{
+            //    MyGrid.Width = 250;
+            //    MyGrid.Height = 100;
+            //}
+            //Controls.Add(MyGrid);
+
+            //ListView listView2 = new ListView();
+            //{
+
+            //}
+            //table.Controls.Add(listView2);
 
         }
         private void CreatePicture(string path)
