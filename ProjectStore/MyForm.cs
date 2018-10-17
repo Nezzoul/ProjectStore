@@ -19,8 +19,6 @@ namespace ProjectStore
     class MyForm : Form
     {
 
-
-
         public Products[] merc;
 
         public MyForm()
@@ -37,60 +35,48 @@ namespace ProjectStore
 
             }
 
-            Size = new Size(800, 600);
-
 
             TableLayoutPanel table = new TableLayoutPanel
             {
-                ColumnCount = 4,
-                RowCount = 4,
+
+                ColumnCount = 3,
+                RowCount = 1,
                 Dock = DockStyle.Fill
             };
             Controls.Add(table);
 
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
             ListView listView1 = new ListView();
             {
-                listView1.Height = 400;
-                listView1.Width = 250;
+                listView1.Width = 300;
+               listView1.Columns.Add("Name", 100, HorizontalAlignment.Left);
+                listView1.Columns.Add("Price", 100, HorizontalAlignment.Left);
+
+                listView1.View = View.Details;
             };
-            table.Controls.Add(listView1, 0,1);
+            //ListViewItem listViewItem = new ListViewItem(merc[i]);
+            List<string> lst = new List<string>();
+            lst.Add("John");
+            lst.Add("Smith");
+            lst.Add("Cait");
+            lst.Add("Irene");
+            lst.Add("Ben");
+            lst.Add("Deniel");
+            listView1.View = View.Details;
 
-            ListView listview2 = new ListView();
+            foreach (string pl in lst)
             {
-                listview2.Height = 400;
-                listview2.Width = 250;
-            }
-            table.Controls.Add(listview2, 3, 1);
+                listView1.Items.Add(pl);
 
-            TextBox rabatt = new TextBox();
+            }
+
+
+            foreach (string pl in lst)
             {
-                rabatt.Height = 100;
-                rabatt.Width = 300;
+                listView1.Items.Add(pl);
+
             }
-            table.Controls.Add(rabatt, 0,3);
+            table.Controls.Add(listView1);
 
-            //PictureBox box1 = new PictureBox();
-            //{
-            //    box1.Height = 250;
-            //    box1.Width = 250;
-            //}
-            //table.Controls.Add(box1, , 3);
-
-            //DataGrid MyGrid = new DataGrid();
-            //{
-            //    MyGrid.Width = 250;
-            //    MyGrid.Height = 100;
-            //}
-            //Controls.Add(MyGrid);
 
             //ListView listView2 = new ListView();
             //{
@@ -101,6 +87,7 @@ namespace ProjectStore
         }
         private void CreatePicture(string path)
         {
+
             PictureBox box1 = new PictureBox
             {
                 Image = Image.FromFile(path),
