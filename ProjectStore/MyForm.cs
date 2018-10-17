@@ -9,95 +9,57 @@ using System.IO;
 
 namespace ProjectStore
 {
-    class Products
-    {
-        public string name;
-        public int price;
 
-    }
 
     class MyForm : Form
     {
 
-        public Products[] merc;
-
         public MyForm()
         {
-            string[] items = File.ReadAllLines("Text1.csv");
-
-            merc = new Products[items.Length];
-
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                string[] stock = items[i].Split(',');
-                merc[i] = new Products { name = stock[0], price = int.Parse(stock[1]), };
-
-            }
-
 
             TableLayoutPanel table = new TableLayoutPanel
             {
-
-                ColumnCount = 3,
-                RowCount = 1,
+                ColumnCount = 4,
+                RowCount = 4,
                 Dock = DockStyle.Fill
             };
             Controls.Add(table);
 
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+
             ListView listView1 = new ListView();
             {
-                listView1.Width = 300;
-               listView1.Columns.Add("Name", 100, HorizontalAlignment.Left);
-                listView1.Columns.Add("Price", 100, HorizontalAlignment.Left);
-
-                listView1.View = View.Details;
+                listView1.Height = 400;
+                listView1.Width = 250;
             };
-            //ListViewItem listViewItem = new ListViewItem(merc[i]);
-            List<string> lst = new List<string>();
-            lst.Add("John");
-            lst.Add("Smith");
-            lst.Add("Cait");
-            lst.Add("Irene");
-            lst.Add("Ben");
-            lst.Add("Deniel");
-            listView1.View = View.Details;
+            table.Controls.Add(listView1, 0, 1);
 
-            foreach (string pl in lst)
+            ListView listview2 = new ListView();
             {
-                listView1.Items.Add(pl);
-
+                listview2.Height = 400;
+                listview2.Width = 250;
             }
+            table.Controls.Add(listview2, 3, 1);
 
-
-            foreach (string pl in lst)
+            TextBox rabatt = new TextBox();
             {
-                listView1.Items.Add(pl);
-
+                rabatt.Height = 100;
+                rabatt.Width = 250;
             }
-            table.Controls.Add(listView1);
+            table.Controls.Add(rabatt, 0, 3);
 
-
-            //ListView listView2 = new ListView();
-            //{
-
-            //}
-            //table.Controls.Add(listView2);
-
-        }
-        private void CreatePicture(string path)
-        {
-
-            PictureBox box1 = new PictureBox
+            Button butt1 = new Button();
             {
-                Image = Image.FromFile(path),
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 150,
-                Height = 150
-            };
-
+                Text = "Add";
+            }
         }
 
     }
 }
-
