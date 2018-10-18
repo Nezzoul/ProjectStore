@@ -12,7 +12,8 @@ namespace ProjectStore
     class Product
     {
         public string Name;
-        public int Price;
+        public string Description;
+        // public int Price;
     }
 
 
@@ -22,7 +23,6 @@ namespace ProjectStore
         public MyForm()
         {
 
-           
             TableLayoutPanel table = new TableLayoutPanel
             {
                 ColumnCount = 4,
@@ -36,49 +36,19 @@ namespace ProjectStore
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
 
-
-
-
-
-
-
-            ListView listView1 = new ListView();
+            ListBox listBox1 = new ListBox();
             {
-                listView1.Height = 400;
-                listView1.Width = 250;
-                listView1.Columns.Add("Name", 100, HorizontalAlignment.Left);
-                listView1.Columns.Add("Price", 100, HorizontalAlignment.Left);
-    
-                listView1.View = View.Details;
-
+                listBox1.Height = 400;
+                listBox1.Width = 250;
             };
-            table.Controls.Add(listView1, 0, 1);
+            table.Controls.Add(listBox1, 0, 1);
 
-            string[] lines = File.ReadAllLines("text1.csv");
-            List<Product> products = new List<Product> { };
-            foreach (string line in lines)
+            ListBox listBox2 = new ListBox();
             {
-                string[] values = line.Split(',');
-                Product p = new Product
-                {
-                    Name = values[0],
-                    Price = int.Parse(values[1])
-                };
-                products.Add(p);
-            };
-             
-            
-
-
-
-
-
-            ListView listview2 = new ListView();
-            {
-                listview2.Height = 400;
-                listview2.Width = 250;
+                listBox2.Height = 400;
+                listBox2.Width = 250;
             }
-            table.Controls.Add(listview2, 4, 1);
+            table.Controls.Add(listBox2, 4, 1);
 
             TextBox rabatt = new TextBox();
             {
@@ -127,6 +97,19 @@ namespace ProjectStore
             }
             //table.Controls.Add(pics1, 2, 1);
 
+            string[] lines = File.ReadAllLines("text1.csv");
+            List<Product> products = new List<Product> { };
+            foreach (string line in lines)
+            {
+                string[] values = line.Split(',');
+                Product p = new Product
+                {
+                    Name = values[0],
+                    Description = values[1],
+
+                };
+                listBox1.Items.Add(p.Name + ", " + p.Description);
+            }
         }
 
     }
