@@ -26,8 +26,8 @@ namespace ProjectStore
             Controls.Add(table);
             for (int i = 0; i < 4; i++)
             {
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
 
             ListView listView1 = new ListView();
@@ -49,7 +49,8 @@ namespace ProjectStore
                 rabatt.Height = 100;
                 rabatt.Width = 250;
             }
-            table.Controls.Add(rabatt, 0,4);
+
+            table.Controls.Add(rabatt, 0, 4);
 
             Button butt1 = new Button();
             {
@@ -80,7 +81,8 @@ namespace ProjectStore
                 box1.Height = 150;
                 box1.Width = 150;
             }
-            table.Controls.Add(box1, 2,1);
+
+            table.Controls.Add(box1, 2, 1);
 
             PictureBox pics1 = new PictureBox();
             {
@@ -88,7 +90,8 @@ namespace ProjectStore
                 pics1.Width = 250;
             }
             //table.Controls.Add(pics1, 2, 1);
-        }   
+
+        }
 
     }
 }
