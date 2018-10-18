@@ -35,7 +35,7 @@ namespace ProjectStore
                 listView1.Height = 400;
                 listView1.Width = 250;
             };
-            table.Controls.Add(listView1, 0,1);
+            table.Controls.Add(listView1, 0, 1);
 
             ListView listview2 = new ListView();
             {
@@ -92,4 +92,3 @@ namespace ProjectStore
 
     }
 }
-
