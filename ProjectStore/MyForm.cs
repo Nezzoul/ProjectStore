@@ -48,12 +48,12 @@ namespace ProjectStore
             }
             table.Controls.Add(listview2, 3, 1);
 
-            TextBox rabatt = new TextBox();
+            TextBox discountBox = new TextBox();
             {
-                rabatt.Height = 100;
-                rabatt.Width = 250;
+                discountBox.Height = 100;
+                discountBox.Width = 250;
             }
-            table.Controls.Add(rabatt, 0, 3);
+            table.Controls.Add(discountBox, 0, 3);
 
             Button butt1 = new Button();
             {

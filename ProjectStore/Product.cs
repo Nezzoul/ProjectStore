@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectStore
 {
-    class Products
+    class Product
     {
       
     }
