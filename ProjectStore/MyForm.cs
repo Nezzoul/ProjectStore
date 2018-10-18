@@ -18,7 +18,6 @@ namespace ProjectStore
 
     class MyForm : Form
     {
-        public Product[] merc;
 
         public MyForm()
         {
@@ -67,6 +66,11 @@ namespace ProjectStore
                 };
                 products.Add(p);
             };
+             
+            
+
+
+
 
 
             ListView listview2 = new ListView();
