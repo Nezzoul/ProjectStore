@@ -9,22 +9,52 @@ using System.IO;
 
 namespace ProjectStore
 {
+    interface IProduct
+    {
+        string Name { get; set; }
+        double Price { get; set; }
+        void Enlarge(int steps);
+        string Summary { get; }
+    }
+
+    class Computer : IProduct
+    {
+        public string Name { get; set; }
+        public string Model { get; set; }
+        public double Price { get; set; }
+        public double HardDrive { get; set; }
+
+        public string Summary
+        {
+            get => "Laptop " + Name + " Model " + Model + " Price "
+            + Price + " HardDrive " + HardDrive;
+        }
+
+        public void Enlarge(int steps)
+        {
+            HardDrive += 100 * steps;
+        }
+    }
+
     class Product
     {
         public string Name;
         public string Description;
-        // public int Price;
+        //public int Price;
     }
 
 
     class MyForm : Form
     {
+        public ListBox listBox1;
+        public ListBox listBox2;
 
         public MyForm()
         {
 
             TableLayoutPanel table = new TableLayoutPanel
             {
+                
                 ColumnCount = 4,
                 RowCount = 4,
                 Dock = DockStyle.Fill
@@ -36,14 +66,14 @@ namespace ProjectStore
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
 
-            ListBox listBox1 = new ListBox();
+            listBox1 = new ListBox();
             {
                 listBox1.Height = 400;
                 listBox1.Width = 250;
             };
             table.Controls.Add(listBox1, 0, 1);
 
-            ListBox listBox2 = new ListBox();
+            listBox2 = new ListBox();
             {
                 listBox2.Height = 400;
                 listBox2.Width = 250;
@@ -58,17 +88,22 @@ namespace ProjectStore
 
             table.Controls.Add(rabatt, 0, 4);
 
-            Button butt1 = new Button();
+            
+            Button Butt1 = new Button();
             {
-                butt1.Text = "Add product";
+                Butt1.Text = "Add product";
             }
-            table.Controls.Add(butt1, 2, 2);
+            table.Controls.Add(Butt1, 2, 2);
 
-            Button butt2 = new Button();
+            Butt1.Click += Butt1_click;
+
+            Button Butt2 = new Button();
             {
-                butt2.Text = "remove product";
+                Butt2.Text = "remove product";
             }
-            table.Controls.Add(butt2, 2, 3);
+            table.Controls.Add(Butt2, 2, 3);
+
+            Butt2.Click += Butt2_click;
 
             Button butt3 = new Button();
             {
@@ -82,13 +117,17 @@ namespace ProjectStore
             }
             table.Controls.Add(label1, 0, 3);
 
-            RichTextBox box1 = new RichTextBox();
+            PictureBox pictureBox1 = new PictureBox();
             {
-                box1.Height = 150;
-                box1.Width = 150;
-            }
-
-            table.Controls.Add(box1, 2, 1);
+                pictureBox1.Height = 150;
+                pictureBox1.Width = 150;
+                Size = new Size(700, 550);
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            };
+            table.Controls.Add(pictureBox1, 2, 1);
+            pictureBox1.ImageLocation = "cat1.jpg";
+            
+            table.Controls.Add(pictureBox1, 2, 1);
 
             PictureBox pics1 = new PictureBox();
             {
@@ -112,5 +151,23 @@ namespace ProjectStore
             }
         }
 
+        static double TotalPrice(IProduct[] products)
+        {
+            double totalPrice = 0;
+            foreach (var p in products)
+            {
+                totalPrice += p.Price;
+            }
+            return totalPrice;
+        }
+        private void Butt1_click(object sender, System.EventArgs e)
+        {
+            listBox2.Items.Add(listBox1.SelectedItem);
+        }
+
+        private void Butt2_click(object sender, EventArgs e)
+        {
+            listBox2.Items.Remove(listBox2.SelectedItem);
+        }
     }
 }
