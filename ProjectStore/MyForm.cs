@@ -9,38 +9,38 @@ using System.IO;
 
 namespace ProjectStore
 {
-    interface IProduct
-    {
-        string Name { get; set; }
-        double Price { get; set; }
-        void Enlarge(int steps);
-        string Summary { get; }
-    }
+    //interface IProduct
+    //{
+    //    string Name { get; set; }
+    //    double Price { get; set; }
+    //    void Enlarge(int steps);
+    //    string Summary { get; }
+    //}
 
-    class Computer : IProduct
-    {
-        public string Name { get; set; }
-        public string Model { get; set; }
-        public double Price { get; set; }
-        public double HardDrive { get; set; }
+    //class Computer : IProduct
+    //{
+    //    public string Name { get; set; }
+    //    public string Model { get; set; }
+    //    public double Price { get; set; }
+    //    public double HardDrive { get; set; }
 
-        public string Summary
-        {
-            get => "Laptop " + Name + " Model " + Model + " Price "
-            + Price + " HardDrive " + HardDrive;
-        }
+    //    public string Summary
+    //    {
+    //        get => "Laptop " + Name + " Model " + Model + " Price "
+    //        + Price + " HardDrive " + HardDrive;
+    //    }
 
-        public void Enlarge(int steps)
-        {
-            HardDrive += 100 * steps;
-        }
-    }
+    //    public void Enlarge(int steps)
+    //    {
+    //        HardDrive += 100 * steps;
+    //    }
+    //}
 
     class Product
     {
         public string Name;
         public string Description;
-        //public int Price;
+        public double Price;
     }
 
 
@@ -54,7 +54,7 @@ namespace ProjectStore
 
             TableLayoutPanel table = new TableLayoutPanel
             {
-                
+
                 ColumnCount = 4,
                 RowCount = 4,
                 Dock = DockStyle.Fill
@@ -65,6 +65,7 @@ namespace ProjectStore
                 table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
+
 
             listBox1 = new ListBox();
             {
@@ -80,15 +81,23 @@ namespace ProjectStore
             }
             table.Controls.Add(listBox2, 4, 1);
 
-            TextBox rabatt = new TextBox();
+            TextBox Discount = new TextBox();
             {
-                rabatt.Height = 100;
-                rabatt.Width = 250;
+                Discount.Height = 100;
+                Discount.Width = 250;
             }
 
-            table.Controls.Add(rabatt, 0, 4);
+            table.Controls.Add(Discount, 0, 4);
 
-            
+            //TextBox Descript = new TextBox();
+            //{
+            //    Text = "Neque porro quisquam est qui dolorem ipsum quia " +
+            //            "dolor sit amet, consectetur, adipisci velit...";
+            //    Discount.Height = 200;
+            //    Discount.Width = 150;
+            //}
+            //table.Controls.Add(Descript, 2,1);
+
             Button Butt1 = new Button();
             {
                 Butt1.Text = "Add product";
@@ -111,6 +120,8 @@ namespace ProjectStore
             }
             table.Controls.Add(butt3, 3, 3);
 
+            butt3.Click += Butt3_click;
+
             Label label1 = new Label();
             {
                 label1.Text = "Discount code:";
@@ -126,15 +137,9 @@ namespace ProjectStore
             };
             table.Controls.Add(pictureBox1, 2, 1);
             pictureBox1.ImageLocation = "cat1.jpg";
-            
+
             table.Controls.Add(pictureBox1, 2, 1);
 
-            PictureBox pics1 = new PictureBox();
-            {
-                pics1.Height = 250;
-                pics1.Width = 250;
-            }
-            //table.Controls.Add(pics1, 2, 1);
 
             string[] lines = File.ReadAllLines("text1.csv");
             List<Product> products = new List<Product> { };
@@ -145,21 +150,22 @@ namespace ProjectStore
                 {
                     Name = values[0],
                     Description = values[1],
-
+                    Price = double.Parse(values[2])
                 };
-                listBox1.Items.Add(p.Name + ", " + p.Description);
+                listBox1.Items.Add(p.Name + ", " + p.Description + ", " + p.Price);
             }
+
         }
 
-        static double TotalPrice(IProduct[] products)
-        {
-            double totalPrice = 0;
-            foreach (var p in products)
-            {
-                totalPrice += p.Price;
-            }
-            return totalPrice;
-        }
+        //static double TotalPrice(IProduct[] products)
+        //{
+        //    double totalPrice = 0;
+        //    foreach (var p in products)
+        //    {
+        //        totalPrice += p.Price;
+        //    }
+        //    return totalPrice;
+        //}
         private void Butt1_click(object sender, System.EventArgs e)
         {
             listBox2.Items.Add(listBox1.SelectedItem);
@@ -168,6 +174,16 @@ namespace ProjectStore
         private void Butt2_click(object sender, EventArgs e)
         {
             listBox2.Items.Remove(listBox2.SelectedItem);
+        }
+
+        private void Butt3_click(object sender, EventArgs e)
+        {
+            StringBuilder str = new StringBuilder();
+            foreach (object selecteditem in listBox2.Items)
+            {
+                str.AppendLine(selecteditem.ToString());
+            }
+            MessageBox.Show("Din totala order innehåller:  " + str);
         }
     }
 }
