@@ -9,38 +9,39 @@ using System.IO;
 
 namespace ProjectStore
 {
-    //interface IProduct
-    //{
-    //    string Name { get; set; }
-    //    double Price { get; set; }
-    //    void Enlarge(int steps);
-    //    string Summary { get; }
-    //}
+    interface IProduct
+    {
+        string Name { get; set; }
+        double Price { get; set; }
+        void Enlarge(int steps);
+        string Summary { get; }
+    }
 
-    //class Computer : IProduct
-    //{
-    //    public string Name { get; set; }
-    //    public string Model { get; set; }
-    //    public double Price { get; set; }
-    //    public double HardDrive { get; set; }
+    class Computer : IProduct
+    {
+        public string Name { get; set; }
+        public string Model { get; set; }
+        public double Price { get; set; }
+        public double HardDrive { get; set; }
 
-    //    public string Summary
-    //    {
-    //        get => "Laptop " + Name + " Model " + Model + " Price "
-    //        + Price + " HardDrive " + HardDrive;
-    //    }
+        public string Summary
+        {
+            get => "Laptop " + Name + " Model " + Model + " Price "
+            + Price + " HardDrive " + HardDrive;
+        }
 
-    //    public void Enlarge(int steps)
-    //    {
-    //        HardDrive += 100 * steps;
-    //    }
-    //}
+        public void Enlarge(int steps)
+        {
+            HardDrive += 100 * steps;
+        }
+    }
 
     class Product
     {
         public string Name;
         public string Description;
         public double Price;
+        public int amount;
     }
 
 
@@ -48,6 +49,12 @@ namespace ProjectStore
     {
         public ListBox listBox1;
         public ListBox listBox2;
+        public Label label2;
+        List<Product> products;
+        List<Product> cartList = new List<Product>();
+        double sumOfAllProducts;
+        Button Butt2;
+        TextBox text1;
 
         public MyForm()
         {
@@ -59,7 +66,29 @@ namespace ProjectStore
                 Dock = DockStyle.Fill
             };
             Controls.Add(table);
-            table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+            Size = new Size(800, 600);
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            //table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+
+            listBox1 = new ListBox
+            {
+                Dock = DockStyle.Fill,
+            };
+            table.SetRowSpan(listBox1, 2);
+            table.Controls.Add(listBox1, 0, 0);
+
+            listBox2 = new ListBox
+            {
+                Dock = DockStyle.Fill,
+            };
+            table.SetRowSpan(listBox2, 2);
+            table.Controls.Add(listBox2, 2, 0);
+
 
             TableLayoutPanel table2 = new TableLayoutPanel
             {
@@ -68,97 +97,107 @@ namespace ProjectStore
                 Dock = DockStyle.Fill
             };
             table.Controls.Add(table2, 1, 0);
-            table2.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
-            //===================================================
 
-            listBox1 = new ListBox();
+
+
+            TableLayoutPanel table3 = new TableLayoutPanel
             {
-                listBox1.Height = 400;
-                listBox1.Width = 250;
-
+                ColumnCount = 2,
+                RowCount = 2,
+                Dock = DockStyle.Fill,
             };
-            table.Controls.Add(listBox1, 0, 0);
+            table.Controls.Add(table3, 0, 2);
 
-            //====================================================
+            TableLayoutPanel table4 = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 2,
+                Dock = DockStyle.Fill,
+            };
+            table.Controls.Add(table4, 1, 2);
+
+            TableLayoutPanel table5 = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 2,
+                Dock = DockStyle.Fill,
+            };
+            table.Controls.Add(table5, 2, 2);
+
 
             PictureBox pictureBox1 = new PictureBox();
             {
                 pictureBox1.Height = 200;
                 pictureBox1.Width = 300;
-                Size = new Size(700, 550);
+
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             };
             table2.Controls.Add(pictureBox1, 0, 0);
             pictureBox1.ImageLocation = "cat1.jpg";
 
-            //listBox2 = new ListBox();
-            //{
-            //    listBox2.Height = 400;
-            //    listBox2.Width = 250;
-            //}
-            //table.Controls.Add(listBox2, 4, 1);
 
-            //TextBox Discount = new TextBox();
-            //{
-            //    Discount.Height = 100;
-            //    Discount.Width = 250;
-            //}
-
-            //table.Controls.Add(Discount, 0, 4);
-
-            TextBox Descript = new TextBox()
+            Label Descript = new Label()
             {
-                Multiline = true,
                 Text = "Neque porro quisquam est qui dolorem ipsum quia " +
                         "dolor sit amet, consectetur, adipisci velit...",
-                        Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+
             };
-            table2.Controls.Add(Descript, 0, 1);
+            table.Controls.Add(Descript, 1, 1);
+
+            text1 = new TextBox();
+            {
+                text1.Height = 100;
+                text1.Width = 250;
+                this.Controls.Add(text1);
+                text1.KeyPress += new KeyPressEventHandler(Keypressed);
+            }
+
+            Button Butt1 = new Button();
+            {
+
+                Butt1.Text = "Add product";
+            }
+            table4.Controls.Add(Butt1, 0, 0);
 
 
+            Butt1.Click += Butt1_click;
 
-            //#region Buttons
+            Button Butt2 = new Button();
+            {
+                Butt2.Text = "Remove product";
 
-            //Button Butt1 = new Button();
-            //{
-            //    Butt1.Text = "Add product";
-            //}
-            //table.Controls.Add(Butt1, 2, 2);
+            }
+            table4.Controls.Add(Butt2, 1, 0);
 
-            //Butt1.Click += Butt1_click;
+            Butt2.Click += Butt2_click;
 
-            //Button Butt2 = new Button();
-            //{
-            //    Butt2.Text = "remove product";
-            //}
-            //table.Controls.Add(Butt2, 2, 3);
+            Button butt3 = new Button();
+            {
+                butt3.Text = "Checkout";
 
-            //Butt2.Click += Butt2_click;
+            }
+            table5.Controls.Add(butt3, 1, 1);
 
-            //Button butt3 = new Button();
-            //{
-            //    butt3.Text = "Checkout";
-            //}
-            //table.Controls.Add(butt3, 3, 3);
-
-            //butt3.Click += Butt3_click;
-
-            //Label label1 = new Label();
-            //{
-            //    label1.Text = "Discount code:";
-            //}
-            //table.Controls.Add(label1, 0, 3);
-            //#endregion
+            butt3.Click += Butt3_click;
 
 
+            Label label1 = new Label();
+            {
+                label1.Text = "Discount Code: ";
 
+            }
+            table3.Controls.Add(label1, 0, 0);
 
-
-
-
+            TextBox Discount = new TextBox();
+            {
+                Discount.Height = 100;
+                Discount.Width = 250;
+            }
+            table3.Controls.Add(Discount, 0, 1);
 
             string[] lines = File.ReadAllLines("text1.csv");
-            List<Product> products = new List<Product> { };
+            products = new List<Product>();
             foreach (string line in lines)
             {
                 string[] values = line.Split(',');
@@ -169,37 +208,87 @@ namespace ProjectStore
                     Price = double.Parse(values[2])
                 };
                 listBox1.Items.Add(p.Name + ", " + p.Description + ", " + p.Price);
+                products.Add(p);
             }
 
         }
 
-        //static double TotalPrice(IProduct[] products)
-        //{
-        //    double totalPrice = 0;
-        //    foreach (var p in products)
-        //    {
-        //        totalPrice += p.Price;
-        //    }
-        //    return totalPrice;
-        //}
+        static double TotalPrice(IProduct[] products)
+        {
+            double totalPrice = 0;
+            foreach (IProduct p in products)
+            {
+                totalPrice += p.Price;
+            }
+            return totalPrice;
+        }
         private void Butt1_click(object sender, System.EventArgs e)
         {
-            listBox2.Items.Add(listBox1.SelectedItem);
+            if (listBox1.SelectedItem != null)
+            {
+                int index = listBox1.SelectedIndex;
+                listBox2.Items.Add(listBox1.SelectedItem);
+                cartList.Add(products[index]);
+            }
         }
 
         private void Butt2_click(object sender, EventArgs e)
         {
-            listBox2.Items.Remove(listBox2.SelectedItem);
+            if (listBox2.SelectedItem != null)
+            {
+                int index = listBox2.SelectedIndex;
+                listBox2.Items.RemoveAt(index);
+                cartList.RemoveAt(index);
+            }
         }
 
         private void Butt3_click(object sender, EventArgs e)
         {
             StringBuilder str = new StringBuilder();
-            foreach (object selecteditem in listBox2.Items)
+            List<Product> checkOut = new List<Product>();
+
+
+            foreach (Product item in cartList)
             {
-                str.AppendLine(selecteditem.ToString());
+                if (!checkOut.Contains(item))
+                {
+                    checkOut.Add(item);
+                    item.amount++;
+                }
+                else
+                {
+                    item.amount++;
+                }
+                sumOfAllProducts += item.Price;
             }
-            MessageBox.Show("Din totala order innehåller:  " + str);
+            foreach (Product item in checkOut)
+            {
+                str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price);
+            }
+            MessageBox.Show(str.ToString() + "\nTotal kostnad: " + sumOfAllProducts);
+            sumOfAllProducts = 0;
+            listBox2.Items.Clear();
+            cartList.Clear();
         }
+        private void Keypressed(object o, KeyPressEventArgs e)
+        {
+            String input = text1.Text;
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                e.Handled = true;
+            }
+
+
+            string[] line = File.ReadAllLines("rabatt.csv");
+            //List<string> rabatt = new List<string>();
+            foreach (string c in line)
+            {
+                if (input == c)
+                {
+                    MessageBox.Show("koden fungerar");
+                }
+            }
+        }
+
     }
 }
