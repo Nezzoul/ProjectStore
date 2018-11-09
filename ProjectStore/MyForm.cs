@@ -29,12 +29,12 @@ namespace ProjectStore
     {
         public ListBox listBox1;
         public ListBox listBox2;
-      
+        public Label ProductDescription;
         List<Product> products;
         List<Product> cartList = new List<Product>();
         double sumOfAllProducts;
-        
         TextBox text1;
+
 
         public MyForm()
         {
@@ -53,13 +53,13 @@ namespace ProjectStore
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
-            //table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
 
             listBox1 = new ListBox
             {
                 Dock = DockStyle.Fill,
             };
             table.SetRowSpan(listBox1, 2);
+            listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
             table.Controls.Add(listBox1, 0, 0);
 
             listBox2 = new ListBox
@@ -116,14 +116,13 @@ namespace ProjectStore
             pictureBox1.ImageLocation = "cat1.jpg";
 
 
-            Label Descript = new Label()
+            ProductDescription = new Label()
             {
-                Text = "Neque porro quisquam est qui dolorem ipsum quia" +
-                        "dolor sit amet, consectetur, adipisci velit...",
+                Text = "",
                 Dock = DockStyle.Fill,
 
             };
-            table.Controls.Add(Descript, 1, 1);
+            table.Controls.Add(ProductDescription, 1, 1);
 
             text1 = new TextBox();
             {
@@ -170,7 +169,7 @@ namespace ProjectStore
             }
             table3.Controls.Add(label1, 0, 0);
 
-            string[] lines = File.ReadAllLines("text1.csv");
+            string[] lines = File.ReadAllLines("PetSheet.csv");
             products = new List<Product>();
             foreach (string line in lines)
             {
@@ -180,14 +179,20 @@ namespace ProjectStore
                     Name = values[0],
                     Description = values[1],
                     Price = double.Parse(values[2])
+
                 };
-                // listBox1.Items.Add(p.Name + ", " + p.Description + ", " + p.Price);
                 listBox1.Items.Add(p.Name + ", " + p.Price);
-                
 
                 products.Add(p);
             }
 
+        }
+
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox tmp = (ListBox)sender;
+
+            ProductDescription.Text = products[tmp.SelectedIndex].Description;
         }
 
         static double TotalPrice(IProduct[] products)
@@ -198,6 +203,7 @@ namespace ProjectStore
                 totalPrice += p.Price;
             }
             return totalPrice;
+
         }
         private void Butt1_click(object sender, System.EventArgs e)
         {
@@ -206,6 +212,7 @@ namespace ProjectStore
                 int index = listBox1.SelectedIndex;
                 listBox2.Items.Add(listBox1.SelectedItem);
                 cartList.Add(products[index]);
+                ProductDescription.Text = products[index].Description;
             }
         }
 
@@ -250,9 +257,9 @@ namespace ProjectStore
 
             foreach (Product item in checkOut)
             {
-                str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price);
+                str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price + ":-");
             }
-            MessageBox.Show(str.ToString() + "\nTotal kostnad: " + sumOfAllProducts);
+            MessageBox.Show(str.ToString() + "\nTotal kostnad: " + sumOfAllProducts + ":-");
             sumOfAllProducts = 0;
             listBox2.Items.Clear();
             cartList.Clear();
@@ -279,5 +286,6 @@ namespace ProjectStore
                 }
             }
         }
+
     }
 }
