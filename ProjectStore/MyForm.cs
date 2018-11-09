@@ -13,28 +13,8 @@ namespace ProjectStore
     {
         string Name { get; set; }
         double Price { get; set; }
-        void Enlarge(int steps);
-        string Summary { get; }
     }
 
-    class Computer : IProduct
-    {
-        public string Name { get; set; }
-        public string Model { get; set; }
-        public double Price { get; set; }
-        public double HardDrive { get; set; }
-
-        public string Summary
-        {
-            get => "Laptop " + Name + " Model " + Model + " Price "
-            + Price + " HardDrive " + HardDrive;
-        }
-
-        public void Enlarge(int steps)
-        {
-            HardDrive += 100 * steps;
-        }
-    }
 
     class Product
     {
@@ -49,11 +29,11 @@ namespace ProjectStore
     {
         public ListBox listBox1;
         public ListBox listBox2;
-        public Label label2;
+      
         List<Product> products;
         List<Product> cartList = new List<Product>();
         double sumOfAllProducts;
-        Button Butt2;
+        
         TextBox text1;
 
         public MyForm()
@@ -138,7 +118,7 @@ namespace ProjectStore
 
             Label Descript = new Label()
             {
-                Text = "Neque porro quisquam est qui dolorem ipsum quia " +
+                Text = "Neque porro quisquam est qui dolorem ipsum quia" +
                         "dolor sit amet, consectetur, adipisci velit...",
                 Dock = DockStyle.Fill,
 
@@ -152,6 +132,7 @@ namespace ProjectStore
                 this.Controls.Add(text1);
                 text1.KeyPress += new KeyPressEventHandler(Keypressed);
             }
+            table3.Controls.Add(text1, 0, 1);
 
             Button Butt1 = new Button();
             {
@@ -189,13 +170,6 @@ namespace ProjectStore
             }
             table3.Controls.Add(label1, 0, 0);
 
-            TextBox Discount = new TextBox();
-            {
-                Discount.Height = 100;
-                Discount.Width = 250;
-            }
-            table3.Controls.Add(Discount, 0, 1);
-
             string[] lines = File.ReadAllLines("text1.csv");
             products = new List<Product>();
             foreach (string line in lines)
@@ -207,7 +181,10 @@ namespace ProjectStore
                     Description = values[1],
                     Price = double.Parse(values[2])
                 };
-                listBox1.Items.Add(p.Name + ", " + p.Description + ", " + p.Price);
+                // listBox1.Items.Add(p.Name + ", " + p.Description + ", " + p.Price);
+                listBox1.Items.Add(p.Name + ", " + p.Price);
+                
+
                 products.Add(p);
             }
 
@@ -244,16 +221,15 @@ namespace ProjectStore
 
         private void Butt3_click(object sender, EventArgs e)
         {
+
             StringBuilder str = new StringBuilder();
             List<Product> checkOut = new List<Product>();
-
-
             foreach (Product item in cartList)
             {
                 if (!checkOut.Contains(item))
                 {
                     checkOut.Add(item);
-                    item.amount++;
+                    item.amount = 1;
                 }
                 else
                 {
@@ -261,6 +237,17 @@ namespace ProjectStore
                 }
                 sumOfAllProducts += item.Price;
             }
+
+            string[] line = File.ReadAllLines("rabatt.csv");
+            foreach (string c in line)
+            {
+                if (text1.Text.Contains(c))
+                {
+                    sumOfAllProducts = sumOfAllProducts * 0.75;
+                    break;
+                }
+            }
+
             foreach (Product item in checkOut)
             {
                 str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price);
@@ -278,17 +265,19 @@ namespace ProjectStore
                 e.Handled = true;
             }
 
-
             string[] line = File.ReadAllLines("rabatt.csv");
-            //List<string> rabatt = new List<string>();
             foreach (string c in line)
             {
                 if (input == c)
                 {
-                    MessageBox.Show("koden fungerar");
+                    MessageBox.Show("Din totala rabatt är: 25%");
+                }
+                else if (input == "julklapp")
+                {
+                    MessageBox.Show("denna koden är ogiltig");
+                    break;
                 }
             }
         }
-
     }
 }
