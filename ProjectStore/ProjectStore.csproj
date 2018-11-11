@@ -62,10 +62,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bilder\Argkatt.jpg" />
-    <Content Include="Bilder\latkatt.jpg" />
-    <Content Include="Bilder\Svartkatt.jpg" />
-    <Content Include="Bilder\Vitkatt.jpg" />
+    <Content Include="Bilder\Argkatt.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bilder\latkatt.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bilder\Svartkatt.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bilder\Vitkatt.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

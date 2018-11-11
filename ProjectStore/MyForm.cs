@@ -22,6 +22,7 @@ namespace ProjectStore
         public string Description;
         public double Price;
         public int amount;
+        public string Image;
     }
 
 
@@ -33,87 +34,90 @@ namespace ProjectStore
         List<Product> products;
         List<Product> cartList = new List<Product>();
         double sumOfAllProducts;
-        TextBox text1;
+        TextBox CheckoutReceipts;
+        PictureBox pictureBox1;
 
 
         public MyForm()
         {
 
-            TableLayoutPanel table = new TableLayoutPanel
+            TableLayoutPanel MainTable = new TableLayoutPanel
             {
                 ColumnCount = 3,
                 RowCount = 3,
                 Dock = DockStyle.Fill
             };
-            Controls.Add(table);
+            Controls.Add(MainTable);
             Size = new Size(800, 600);
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
 
             listBox1 = new ListBox
             {
                 Dock = DockStyle.Fill,
             };
-            table.SetRowSpan(listBox1, 2);
+            MainTable.SetRowSpan(listBox1, 2);
+
             listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
-            table.Controls.Add(listBox1, 0, 0);
+
+            MainTable.Controls.Add(listBox1, 0, 0);
+
 
             listBox2 = new ListBox
             {
                 Dock = DockStyle.Fill,
             };
-            table.SetRowSpan(listBox2, 2);
-            table.Controls.Add(listBox2, 2, 0);
+            MainTable.SetRowSpan(listBox2, 2);
+            MainTable.Controls.Add(listBox2, 2, 0);
 
 
-            TableLayoutPanel table2 = new TableLayoutPanel
+            TableLayoutPanel TablePictureAndDescription = new TableLayoutPanel
             {
                 ColumnCount = 2,
                 RowCount = 2,
                 Dock = DockStyle.Fill
             };
-            table.Controls.Add(table2, 1, 0);
+            MainTable.Controls.Add(TablePictureAndDescription, 1, 0);
 
 
 
-            TableLayoutPanel table3 = new TableLayoutPanel
+            TableLayoutPanel TableDiscount = new TableLayoutPanel
             {
                 ColumnCount = 2,
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            table.Controls.Add(table3, 0, 2);
+            MainTable.Controls.Add(TableDiscount, 0, 2);
 
-            TableLayoutPanel table4 = new TableLayoutPanel
+            TableLayoutPanel TableRemoveAddProductButtons = new TableLayoutPanel
             {
                 ColumnCount = 2,
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            table.Controls.Add(table4, 1, 2);
+            MainTable.Controls.Add(TableRemoveAddProductButtons, 1, 2);
 
-            TableLayoutPanel table5 = new TableLayoutPanel
+            TableLayoutPanel TableCheckoutButton = new TableLayoutPanel
             {
                 ColumnCount = 2,
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            table.Controls.Add(table5, 2, 2);
+            MainTable.Controls.Add(TableCheckoutButton, 2, 2);
 
 
-            PictureBox pictureBox1 = new PictureBox();
+            pictureBox1 = new PictureBox();
             {
                 pictureBox1.Height = 200;
                 pictureBox1.Width = 300;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             };
-            table2.Controls.Add(pictureBox1, 0, 0);
-            pictureBox1.ImageLocation = "cat1.jpg";
+            TablePictureAndDescription.Controls.Add(pictureBox1, 0, 0);
 
 
             ProductDescription = new Label()
@@ -122,44 +126,44 @@ namespace ProjectStore
                 Dock = DockStyle.Fill,
 
             };
-            table.Controls.Add(ProductDescription, 1, 1);
+            MainTable.Controls.Add(ProductDescription, 1, 1);
 
-            text1 = new TextBox();
+            CheckoutReceipts = new TextBox();
             {
-                text1.Height = 100;
-                text1.Width = 250;
-                this.Controls.Add(text1);
-                text1.KeyPress += new KeyPressEventHandler(Keypressed);
+                CheckoutReceipts.Height = 100;
+                CheckoutReceipts.Width = 250;
+                this.Controls.Add(CheckoutReceipts);
+                CheckoutReceipts.KeyPress += new KeyPressEventHandler(Keypressed);
             }
-            table3.Controls.Add(text1, 0, 1);
+            TableDiscount.Controls.Add(CheckoutReceipts, 0, 1);
 
-            Button Butt1 = new Button();
+            Button ButtAddProduct = new Button();
             {
 
-                Butt1.Text = "Add product";
+                ButtAddProduct.Text = "Add product";
             }
-            table4.Controls.Add(Butt1, 0, 0);
+            TableRemoveAddProductButtons.Controls.Add(ButtAddProduct, 0, 0);
 
 
-            Butt1.Click += Butt1_click;
+            ButtAddProduct.Click += Butt1_click;
 
-            Button Butt2 = new Button();
+            Button ButtRemoveProduct = new Button();
             {
-                Butt2.Text = "Remove product";
-
-            }
-            table4.Controls.Add(Butt2, 1, 0);
-
-            Butt2.Click += Butt2_click;
-
-            Button butt3 = new Button();
-            {
-                butt3.Text = "Checkout";
+                ButtRemoveProduct.Text = "Remove product";
 
             }
-            table5.Controls.Add(butt3, 1, 1);
+            TableRemoveAddProductButtons.Controls.Add(ButtRemoveProduct, 1, 0);
 
-            butt3.Click += Butt3_click;
+            ButtRemoveProduct.Click += Butt2_click;
+
+            Button ButtCheckout = new Button();
+            {
+                ButtCheckout.Text = "Checkout";
+
+            }
+            TableCheckoutButton.Controls.Add(ButtCheckout, 1, 1);
+
+            ButtCheckout.Click += Butt3_click;
 
 
             Label label1 = new Label();
@@ -167,7 +171,7 @@ namespace ProjectStore
                 label1.Text = "Discount Code: ";
 
             }
-            table3.Controls.Add(label1, 0, 0);
+            TableDiscount.Controls.Add(label1, 0, 0);
 
             string[] lines = File.ReadAllLines("PetSheet.csv");
             products = new List<Product>();
@@ -178,7 +182,8 @@ namespace ProjectStore
                 {
                     Name = values[0],
                     Description = values[1],
-                    Price = double.Parse(values[2])
+                    Price = double.Parse(values[2]),
+                    Image = values[3].Trim()
 
                 };
                 listBox1.Items.Add(p.Name + ", " + p.Price);
@@ -193,6 +198,8 @@ namespace ProjectStore
             ListBox tmp = (ListBox)sender;
 
             ProductDescription.Text = products[tmp.SelectedIndex].Description;
+            //pictureBox1.ImageLocation = "Bilder/" + products[tmp.SelectedIndex].Image;
+            pictureBox1.Load("Bilder/" + products[tmp.SelectedIndex].Image);
         }
 
         static double TotalPrice(IProduct[] products)
@@ -248,7 +255,7 @@ namespace ProjectStore
             string[] line = File.ReadAllLines("rabatt.csv");
             foreach (string c in line)
             {
-                if (text1.Text.Contains(c))
+                if (CheckoutReceipts.Text.Contains(c))
                 {
                     sumOfAllProducts = sumOfAllProducts * 0.75;
                     break;
@@ -266,7 +273,7 @@ namespace ProjectStore
         }
         private void Keypressed(object o, KeyPressEventArgs e)
         {
-            String input = text1.Text;
+            String input = CheckoutReceipts.Text;
             if (e.KeyChar == (char)Keys.Return)
             {
                 e.Handled = true;
