@@ -163,24 +163,86 @@ namespace ProjectStore
 
             string[] lines = File.ReadAllLines("PetSheet.csv");
             products = new List<Product>();
-            foreach (string line in lines)
+            var failedItems = new List<string>();
+            for (int i = 0; i < lines.Length; i++)
             {
-                string[] values = line.Split(',');
-                Product p = new Product
+                var errorsOnLine = new List<string>();
+                var values = lines[i].Split(',').ToList();
+                Product p = new Product();
+                if (TryGetValue(values, 0, out string name))
                 {
-                    Name = values[0],
-                    Description = values[1],
-                    Price = double.Parse(values[2]),
-                    Image = values[3].Trim()
+                    p.Name = name;
+                }
+                else
+                {
+                    errorsOnLine.Add("Fail to load name on line nr " + i);
+                }
 
-                };
-                listBox1.Items.Add(p.Name + ", " + p.Price);
+                if (TryGetValue(values, 1, out string description))
+                {
+                    p.Description = description;
+                }
+                else
+                {
+                    errorsOnLine.Add("Fail to load description on line nr " + i);
+                }
 
-                products.Add(p);
+                if (TryGetValue(values, 3, out string image))
+                {
+                    if (image.EndsWith(".jpg") || image.EndsWith(".png"))
+                    {
+                        p.Image = image.Replace(" ","");
+                    }else
+                    {
+                        errorsOnLine.Add("Item dose not have correct image format on line nr " + i);
+                    }
+                }
+                else
+                {
+                    errorsOnLine.Add("Fail to load image on line nr " + i);
+                }
+
+                if (TryGetValue(values, 2, out string priceString))
+                {
+                    var parsedPrice = double.TryParse(priceString, out double price);
+                    if (parsedPrice)
+                    {
+                        p.Price = price;
+                    }
+                    else
+                    {
+                        errorsOnLine.Add("Fail to read price on "+ p.Name + " on line nr" + i);
+                    }
+                }
+                else
+                {
+                    errorsOnLine.Add("Fail to load price on line nr " + i);
+                }
+                if (!errorsOnLine.Any())
+                {
+                    products.Add(p);
+                    listBox1.Items.Add(p.Name + ", " + p.Price);
+                }
+                else
+                {
+                    failedItems.AddRange(errorsOnLine);
+                }
             }
-
+            MessageBox.Show("Error on loading products:" + Environment.NewLine + string.Join(Environment.NewLine, failedItems));
         }
-
+        private bool TryGetValue(List<string> line, int indexToGet, out string result)
+        {
+            if ((line.Count()-1) >= indexToGet)
+            {
+                if (indexToGet >= 0)
+                {
+                    result = line[indexToGet];
+                    return true;
+                }
+            }
+            result = null;
+            return false;
+        }
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox tmp = (ListBox)sender;
@@ -268,7 +330,7 @@ namespace ProjectStore
             }
             return result;
         }
-        
+
         private void ButtCheckout_click(object sender, EventArgs e)
         {
             StringBuilder str = new StringBuilder();
