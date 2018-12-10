@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace ProjectStore
 {
@@ -191,8 +190,9 @@ namespace ProjectStore
                 {
                     if (image.EndsWith(".jpg") || image.EndsWith(".png"))
                     {
-                        p.Image = image.Replace(" ","");
-                    }else
+                        p.Image = image.Replace(" ", "");
+                    }
+                    else
                     {
                         errorsOnLine.Add("Item dose not have correct image format on line nr " + i);
                     }
@@ -211,7 +211,7 @@ namespace ProjectStore
                     }
                     else
                     {
-                        errorsOnLine.Add("Fail to read price on "+ p.Name + " on line nr" + i);
+                        errorsOnLine.Add("Fail to read price on " + p.Name + " on line nr" + i);
                     }
                 }
                 else
@@ -232,7 +232,7 @@ namespace ProjectStore
         }
         private bool TryGetValue(List<string> line, int indexToGet, out string result)
         {
-            if ((line.Count()-1) >= indexToGet)
+            if ((line.Count() - 1) >= indexToGet)
             {
                 if (indexToGet >= 0)
                 {
@@ -247,7 +247,6 @@ namespace ProjectStore
         {
             ListBox tmp = (ListBox)sender;
             try
-
             {
                 ProductDescription.Text = products[tmp.SelectedIndex].Description;
 
@@ -276,13 +275,16 @@ namespace ProjectStore
 
             if (listBox2.SelectedItem != null)
             {
+                int index = listBox2.SelectedIndex;
                 try
                 {
-                    int index = listBox2.SelectedIndex;
                     listBox2.Items.RemoveAt(index);
                     cartList.RemoveAt(index);
                 }
-                catch { }
+                catch
+                {
+                    MessageBox.Show("faild to remove item");
+                }
             }
         }
         private void SaveCart_click(object sender, EventArgs e)
@@ -346,10 +348,8 @@ namespace ProjectStore
                 }
             }
 
-            foreach (Product item in products)
-            {
-                str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price + ":-");
-            }
+            products.ToList().ForEach(x => str.AppendLine(x.amount + "st, Namn: " + x.Name + ", Pris:" + x.Price + ":-"));
+
             MessageBox.Show(str.ToString() + "\nTotal kostnad: " + sumOfAllProducts + ":-");
             sumOfAllProducts = 0;
             listBox2.Items.Clear();
