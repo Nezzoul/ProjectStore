@@ -9,13 +9,6 @@ using System.IO;
 
 namespace ProjectStore
 {
-    interface IProduct
-    {
-        string Name { get; set; }
-        double Price { get; set; }
-    }
-
-
     class Product
     {
         public string Name;
@@ -24,7 +17,6 @@ namespace ProjectStore
         public int amount;
         public string Image;
     }
-
 
     class MyForm : Form
     {
@@ -37,43 +29,39 @@ namespace ProjectStore
         TextBox CheckoutReceipts;
         PictureBox pictureBox1;
 
-
         public MyForm()
         {
-
-            TableLayoutPanel MainTable = new TableLayoutPanel
+            TableLayoutPanel MainRootTable = new TableLayoutPanel
             {
                 ColumnCount = 3,
                 RowCount = 3,
                 Dock = DockStyle.Fill
             };
-            Controls.Add(MainTable);
+            Controls.Add(MainRootTable);
             Size = new Size(800, 600);
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainRootTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainRootTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainRootTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            MainRootTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainRootTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            MainRootTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
 
             listBox1 = new ListBox
             {
                 Dock = DockStyle.Fill,
             };
-            MainTable.SetRowSpan(listBox1, 2);
+            MainRootTable.SetRowSpan(listBox1, 2);
 
             listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
 
-            MainTable.Controls.Add(listBox1, 0, 0);
-
+            MainRootTable.Controls.Add(listBox1, 0, 0);
 
             listBox2 = new ListBox
             {
                 Dock = DockStyle.Fill,
             };
-            MainTable.SetRowSpan(listBox2, 2);
-            MainTable.Controls.Add(listBox2, 2, 0);
-
+            MainRootTable.SetRowSpan(listBox2, 2);
+            MainRootTable.Controls.Add(listBox2, 2, 0);
 
             TableLayoutPanel TablePictureAndDescription = new TableLayoutPanel
             {
@@ -81,9 +69,7 @@ namespace ProjectStore
                 RowCount = 2,
                 Dock = DockStyle.Fill
             };
-            MainTable.Controls.Add(TablePictureAndDescription, 1, 0);
-
-
+            MainRootTable.Controls.Add(TablePictureAndDescription, 1, 0);
 
             TableLayoutPanel TableDiscount = new TableLayoutPanel
             {
@@ -91,7 +77,7 @@ namespace ProjectStore
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            MainTable.Controls.Add(TableDiscount, 0, 2);
+            MainRootTable.Controls.Add(TableDiscount, 0, 2);
 
             TableLayoutPanel TableRemoveAddProductButtons = new TableLayoutPanel
             {
@@ -99,7 +85,7 @@ namespace ProjectStore
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            MainTable.Controls.Add(TableRemoveAddProductButtons, 1, 2);
+            MainRootTable.Controls.Add(TableRemoveAddProductButtons, 1, 2);
 
             TableLayoutPanel TableCheckoutButton = new TableLayoutPanel
             {
@@ -107,8 +93,7 @@ namespace ProjectStore
                 RowCount = 2,
                 Dock = DockStyle.Fill,
             };
-            MainTable.Controls.Add(TableCheckoutButton, 2, 2);
-
+            MainRootTable.Controls.Add(TableCheckoutButton, 2, 2);
 
             pictureBox1 = new PictureBox();
             {
@@ -119,14 +104,13 @@ namespace ProjectStore
             };
             TablePictureAndDescription.Controls.Add(pictureBox1, 0, 0);
 
-
             ProductDescription = new Label()
             {
                 Text = "",
                 Dock = DockStyle.Fill,
 
             };
-            MainTable.Controls.Add(ProductDescription, 1, 1);
+            MainRootTable.Controls.Add(ProductDescription, 1, 1);
 
             CheckoutReceipts = new TextBox();
             {
@@ -143,9 +127,21 @@ namespace ProjectStore
                 ButtAddProduct.Text = "Add product";
             }
             TableRemoveAddProductButtons.Controls.Add(ButtAddProduct, 0, 0);
+            ButtAddProduct.Click += ButtAddProduct_click;
 
+            Button SaveCart = new Button();
+            {
+                SaveCart.Text = "Save Cart";
+            }
+            TableRemoveAddProductButtons.Controls.Add(SaveCart, 0, 1);
+            SaveCart.Click += SaveCart_click;
 
-            ButtAddProduct.Click += Butt1_click;
+            Button LoadCart = new Button();
+            {
+                LoadCart.Text = "Load Cart";
+            }
+            TableRemoveAddProductButtons.Controls.Add(LoadCart, 1, 1);
+            LoadCart.Click += LoadCart_click;
 
             Button ButtRemoveProduct = new Button();
             {
@@ -154,7 +150,7 @@ namespace ProjectStore
             }
             TableRemoveAddProductButtons.Controls.Add(ButtRemoveProduct, 1, 0);
 
-            ButtRemoveProduct.Click += Butt2_click;
+            ButtRemoveProduct.Click += ButtRemoveProduct_click;
 
             Button ButtCheckout = new Button();
             {
@@ -163,8 +159,7 @@ namespace ProjectStore
             }
             TableCheckoutButton.Controls.Add(ButtCheckout, 1, 1);
 
-            ButtCheckout.Click += Butt3_click;
-
+            ButtCheckout.Click += ButtCheckout_click;
 
             Label label1 = new Label();
             {
@@ -196,23 +191,21 @@ namespace ProjectStore
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox tmp = (ListBox)sender;
+            try
 
-            ProductDescription.Text = products[tmp.SelectedIndex].Description;
-            //pictureBox1.ImageLocation = "Bilder/" + products[tmp.SelectedIndex].Image;
-            pictureBox1.Load("Bilder/" + products[tmp.SelectedIndex].Image);
-        }
-
-        static double TotalPrice(IProduct[] products)
-        {
-            double totalPrice = 0;
-            foreach (IProduct p in products)
             {
-                totalPrice += p.Price;
-            }
-            return totalPrice;
+                ProductDescription.Text = products[tmp.SelectedIndex].Description;
 
+                pictureBox1.Load("Bilder/" + products[tmp.SelectedIndex].Image);
+            }
+            catch
+            {
+                MessageBox.Show("Select an item you are interested in!");
+
+            }
         }
-        private void Butt1_click(object sender, System.EventArgs e)
+
+        private void ButtAddProduct_click(object sender, System.EventArgs e)
         {
             if (listBox1.SelectedItem != null)
             {
@@ -223,19 +216,49 @@ namespace ProjectStore
             }
         }
 
-        private void Butt2_click(object sender, EventArgs e)
+        private void ButtRemoveProduct_click(object sender, EventArgs e)
         {
+
             if (listBox2.SelectedItem != null)
             {
-                int index = listBox2.SelectedIndex;
-                listBox2.Items.RemoveAt(index);
-                cartList.RemoveAt(index);
+                try
+                {
+                    int index = listBox2.SelectedIndex;
+                    listBox2.Items.RemoveAt(index);
+                    cartList.RemoveAt(index);
+                }
+                catch { }
             }
         }
-
-        private void Butt3_click(object sender, EventArgs e)
+        private void SaveCart_click(object sender, EventArgs e)
         {
+            string filename = @"C:\Windows\Temp\SavedCartsheet.csv";
+            string listboxData = "";
+            foreach (string str1 in listBox2.Items)
+            {
+                listboxData += str1 + "\n";
+            }
+            File.WriteAllText(filename, listboxData);
+        }
+        private void LoadCart_click(object sender, EventArgs e)
+        {
+            string[] lines = File.ReadAllLines(@"C:\Windows\Temp\SavedCartsheet.csv");
+            foreach (string line in lines)
+            {
+                string[] lineData = line.Split(',');
+                Product productFromLine = new Product();
+                {
+                    productFromLine.Name = lineData[0];
+                    productFromLine.Price = double.Parse(lineData[1]);
+                   
+                }
+                listBox2.Items.Add(productFromLine.Name + ", " + productFromLine.Price);
 
+                cartList.Add(productFromLine);
+            }
+        }
+        private void ButtCheckout_click(object sender, EventArgs e)
+        {
             StringBuilder str = new StringBuilder();
             List<Product> checkOut = new List<Product>();
             foreach (Product item in cartList)
@@ -286,13 +309,12 @@ namespace ProjectStore
                 {
                     MessageBox.Show("Din totala rabatt är: 25%");
                 }
-                else if (input == "julklapp")
+                else if (input == "Growl")
                 {
                     MessageBox.Show("denna koden är ogiltig");
                     break;
                 }
             }
         }
-
     }
 }
