@@ -9,14 +9,6 @@ using System.IO;
 
 namespace ProjectStore
 {
-    class Product
-    {
-        public string Name;
-        public string Description;
-        public double Price;
-        public int amount;
-        public string Image;
-    }
 
     class MyForm : Form
     {
@@ -24,13 +16,14 @@ namespace ProjectStore
         public ListBox listBox2;
         public Label ProductDescription;
         List<Product> products;
-        List<Product> cartList = new List<Product>();
+        List<Product> cartList;
         double sumOfAllProducts;
         TextBox CheckoutReceipts;
         PictureBox pictureBox1;
 
         public MyForm()
         {
+            cartList = new List<Product>();
             TableLayoutPanel MainRootTable = new TableLayoutPanel
             {
                 ColumnCount = 3,
@@ -236,7 +229,7 @@ namespace ProjectStore
             string listboxData = "";
             foreach (string str1 in listBox2.Items)
             {
-                listboxData += str1 + "\n";
+                listboxData += str1 + Environment.NewLine;
             }
             File.WriteAllText(filename, listboxData);
         }
@@ -246,34 +239,40 @@ namespace ProjectStore
             foreach (string line in lines)
             {
                 string[] lineData = line.Split(',');
-                Product productFromLine = new Product();
+                var productFromLine = new Product()
                 {
-                    productFromLine.Name = lineData[0];
-                    productFromLine.Price = double.Parse(lineData[1]);
-                   
-                }
+                    Name = lineData[0],
+                    Price = double.Parse(lineData[1])
+                };
                 listBox2.Items.Add(productFromLine.Name + ", " + productFromLine.Price);
-
                 cartList.Add(productFromLine);
             }
         }
-        private void ButtCheckout_click(object sender, EventArgs e)
+
+        private IEnumerable<Product> MergProducts(IEnumerable<Product> products)
         {
-            StringBuilder str = new StringBuilder();
-            List<Product> checkOut = new List<Product>();
-            foreach (Product item in cartList)
+            List<Product> result = new List<Product>();
+            foreach (Product item in products)
             {
-                if (!checkOut.Contains(item))
+                var checkOutItem = result.FirstOrDefault(x => x.Name == item.Name);
+                if (checkOutItem is null)
                 {
-                    checkOut.Add(item);
+                    result.Add(item);
                     item.amount = 1;
                 }
                 else
                 {
-                    item.amount++;
+                    checkOutItem.amount++;
                 }
                 sumOfAllProducts += item.Price;
             }
+            return result;
+        }
+        
+        private void ButtCheckout_click(object sender, EventArgs e)
+        {
+            StringBuilder str = new StringBuilder();
+            var products = MergProducts(cartList);
 
             string[] line = File.ReadAllLines("rabatt.csv");
             foreach (string c in line)
@@ -285,7 +284,7 @@ namespace ProjectStore
                 }
             }
 
-            foreach (Product item in checkOut)
+            foreach (Product item in products)
             {
                 str.AppendLine(item.amount + "st, Namn: " + item.Name + ", Pris:" + item.Price + ":-");
             }
