@@ -174,7 +174,7 @@ namespace ProjectStore
                 }
                 else
                 {
-                    errorsOnLine.Add("Fail to load name on line nr " + i);
+                    errorsOnLine.Add("Fail to load name on line nr: " + i);
                 }
 
                 if (TryGetValue(values, 1, out string description))
@@ -183,7 +183,7 @@ namespace ProjectStore
                 }
                 else
                 {
-                    errorsOnLine.Add("Fail to load description on line nr " + i);
+                    errorsOnLine.Add("Fail to load description on line nr: " + i);
                 }
 
                 if (TryGetValue(values, 3, out string image))
@@ -194,12 +194,12 @@ namespace ProjectStore
                     }
                     else
                     {
-                        errorsOnLine.Add("Item dose not have correct image format on line nr " + i);
+                        errorsOnLine.Add("Item does not have correct image format on line nr: " + i);
                     }
                 }
                 else
                 {
-                    errorsOnLine.Add("Fail to load image on line nr " + i);
+                    errorsOnLine.Add("Fail to load image on line nr: " + i);
                 }
 
                 if (TryGetValue(values, 2, out string priceString))
@@ -211,12 +211,12 @@ namespace ProjectStore
                     }
                     else
                     {
-                        errorsOnLine.Add("Fail to read price on " + p.Name + " on line nr" + i);
+                        errorsOnLine.Add("Fail to read price on " + p.Name + " on line nr: " + i);
                     }
                 }
                 else
                 {
-                    errorsOnLine.Add("Fail to load price on line nr " + i);
+                    errorsOnLine.Add("Fail to load price on line nr: " + i);
                 }
                 if (!errorsOnLine.Any())
                 {
@@ -255,7 +255,7 @@ namespace ProjectStore
             catch
             {
                 MessageBox.Show("Select an item you are interested in!");
-
+                
             }
         }
 
